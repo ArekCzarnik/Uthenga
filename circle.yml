@@ -11,7 +11,6 @@ dependencies:
     - rm -fr $(stack path --dist-dir) $(stack path --local-install-root)
     - stack install hlint packdeps cabal-install
     - stack build --fast
-    - stack build --fast --pedantic --haddock --test --no-run-tests --no-haddock-deps
 
 test:
   override:
@@ -23,4 +22,4 @@ test:
     - stack exec -- cabal check
     - stack sdist
   post:
-    - bash <(curl -s https://codecov.io/bash)
+    - coveralls

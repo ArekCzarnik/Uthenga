@@ -2,6 +2,9 @@
 
 Uthenga is a simple user-facing messaging server written in Haskell.
 
+[![Coverage Status](https://coveralls.io/repos/github/ArekCzarnik/Uthenga/badge.svg?branch=master&service=github)](https://coveralls.io/repos/github/ArekCzarnik/Uthenga/badge.svg?branch=master)
+
+
 # Overview
 Uthenga is in an early state (release 0.1). 
 

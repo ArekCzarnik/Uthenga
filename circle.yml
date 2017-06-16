@@ -1,6 +1,7 @@
 dependencies:
   cache_directories:
     - "~/.stack"
+    - "/home/ubuntu/.stack/"
     - ".stack-work"
   pre:
     - curl -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz | tar zx -C /tmp

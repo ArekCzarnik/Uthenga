@@ -21,3 +21,5 @@ test:
     - stack exec -- packdeps *.cabal || true
     - stack exec -- cabal check
     - stack sdist
+  post:
+    - bash <(curl -s https://codecov.io/bash)

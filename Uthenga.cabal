@@ -1,8 +1,8 @@
-name:                SMSGateway
+name:                Uthenga
 version:             0.1.1.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/SMSGateway#readme
+homepage:            https://github.com/ArekCzarnik/Uthenga#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Arek Czarnik
@@ -24,7 +24,7 @@ library
                      , hedis
   default-language:    Haskell2010
 
-executable SMSGateway-exe
+executable Uthenga-exe
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
@@ -37,7 +37,7 @@ executable SMSGateway-exe
                      , SMSGateway
   default-language:    Haskell2010
 
-test-suite SMSGateway-test
+test-suite Uthenga-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
@@ -53,4 +53,4 @@ test-suite SMSGateway-test
 
 source-repository head
   type:     git
-  location: https://github.com/ArekCzarnik/SMSGateway
+  location: https://github.com/ArekCzarnik/Uthenga

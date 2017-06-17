@@ -16,4 +16,4 @@ test:
   override:
     - stack test
   post:
-    - .stack/usr/local/bin/hpc-coveralls --repo-token=$COVERALLS_REPO_TOKEN --exclude-dir=test spec
+    - /home/ubuntu/.local/bin/hpc-coveralls --repo-token=$COVERALLS_REPO_TOKEN --exclude-dir=test spec

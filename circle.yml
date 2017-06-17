@@ -9,11 +9,8 @@ dependencies:
   override:
     - stack setup
     - rm -fr $(stack path --dist-dir) $(stack path --local-install-root)
-    - stack install hpc-coveralls
     - stack build --fast
     
 test:
   override:
     - stack test
-  post:
-    - /home/ubuntu/.local/bin/hpc-coveralls --repo-token=$COVERALLS_REPO_TOKEN --exclude-dir=test spec

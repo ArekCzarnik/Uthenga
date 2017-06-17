@@ -11,9 +11,12 @@ dependencies:
     - rm -fr $(stack path --dist-dir) $(stack path --local-install-root)
     - stack install hlint packdeps cabal-install
     - stack build --fast
+ post:
+     - cabal configure --enable-tests --enable-library-coverage
+     - stack install hpc-coveralls  # Not under 'test' so it's cached
 
 test:
   override:
     - stack test
   post:
-    - bash <(curl -s https://codecov.io/bash)
+    - .stack/usr/local/bin/hpc-coveralls --repo-token=$COVERALLS_REPO_TOKEN --exclude-dir=test spec

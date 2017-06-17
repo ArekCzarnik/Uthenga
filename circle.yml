@@ -15,9 +15,5 @@ dependencies:
 test:
   override:
     - stack test
-    - git ls-files | grep '\.l\?hs$' | xargs stack exec -- hlint -X QuasiQuotes "$@"
-    - stack exec -- cabal update
-    - stack exec --no-ghc-package-path -- cabal install --only-d --dry-run --reorder-goals
-    - stack exec -- packdeps *.cabal || true
   post:
     - bash <(curl -s https://codecov.io/bash)

@@ -27,7 +27,7 @@ postJob conn = do
     Right val -> text (cs val)
 
 setup :: IO Connection
-setup = connect $ disqueConnectInfo {connectHost = "127.0.0.1"}
+setup = connect $ disqueConnectInfo
 
 deconsReplay :: Reply -> B.ByteString
 deconsReplay replay =

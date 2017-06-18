@@ -35,6 +35,7 @@ executable uthenga
                      , scotty
                      , HUnit
                      , hedis
+                     , string-conversions
                      , QuickCheck
                      , Uthenga
   default-language:    Haskell2010

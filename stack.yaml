@@ -43,6 +43,7 @@ extra-deps:
   - hedis-0.9.8
   - scanner-0.2
   - async-2.1.1.1
+  - string-conversions-0.4.0.1
 
 # Override default flag values for local packages and extra-deps
 flags: {}

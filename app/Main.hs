@@ -18,13 +18,19 @@ main = do
 
 postJob :: Connection -> ActionM ()
 postJob conn = do
-  createdJob <- liftIO(runDisque conn $ addjob "test_queue" "test data" 0)
+  createdJob <- liftIO (runDisque conn $ addjob "test_queue" "test data" 0)
   case createdJob of
-                  Left  val ->  text "error"
-                  Right val ->  text (decode val)
+    Left val -> text (decode $ deconsReplay val)
+    Right val -> text (decode val)
 
 setup :: IO Connection
 setup = connect $ disqueConnectInfo {connectHost = "127.0.0.1"}
 
 decode :: B.ByteString -> TL.Text
 decode = TL.fromStrict . T.decodeUtf8
+
+deconsReplay :: Reply -> B.ByteString
+deconsReplay replay =
+      case replay of
+            Error code -> code
+            _ -> ""

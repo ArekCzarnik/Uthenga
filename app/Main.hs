@@ -4,25 +4,26 @@ module Main where
 
 import Web.Scotty
 import Database.Disque
-import Data.ByteString (ByteString)
 import Control.Monad.IO.Class
+import Data.Text.Encoding
 import qualified Data.ByteString as B
+import qualified Data.Text.Lazy.Encoding as TL
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Encoding as T
 
 main :: IO ()
 main = do
-    conn <- setup 
-    runDisque conn $ do
-       result <- addjob "test_queue" "test data" 0
-       liftIO $ print (disqueResult result)
+  conn <- setup
+  scotty 3000 $ get "/:queue/:text/:expire" (postJob conn)
 
+postJob :: Connection -> ActionM ()
+postJob conn = do
+  createdJob <- liftIO(runDisque conn $ do {addjob "test_queue" "test data" 0})
+  case createdJob of
+                  Left  val ->  text "error"
+                  Right val ->  text (decode val)
+                  
+setup = connect $ disqueConnectInfo {connectHost = "127.0.0.1"}
 
-setup = do
-  conn <- connect $ disqueConnectInfo { connectHost = "127.0.0.1" }
-  return conn
-
-disqueResult :: Either Reply ByteString -> ByteString
-disqueResult result = do
-              case result of
-                Left  val ->  "error"
-                Right val ->  val
-
+decode :: B.ByteString -> TL.Text
+decode = TL.fromStrict . T.decodeUtf8

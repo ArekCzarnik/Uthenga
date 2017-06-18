@@ -7,7 +7,6 @@ import Database.Disque
 import Control.Monad.IO.Class
 import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL
-import qualified Data.Text.Encoding as T
 import Data.String.Conversions (cs)
 
 
@@ -27,7 +26,7 @@ postJob conn = do
     Right val -> text (cs val)
 
 setup :: IO Connection
-setup = connect $ disqueConnectInfo
+setup = connect disqueConnectInfo
 
 deconsReplay :: Reply -> B.ByteString
 deconsReplay replay =

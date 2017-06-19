@@ -1,13 +1,18 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Domain where
 
-import qualified Data.Text.Lazy as TL
+import Data.Text.Lazy
+import GHC.Generics
 
 data TargetType = SMS | FIREBASE | APNS
      deriving (Show)
 
-type Code = TL.Text
+data Subscriber = Subscriber {
+      id :: Integer
+    , target :: TargetType
+    , code :: Text
+    , userid :: Text
+    } deriving (Generic, Show)
+     
 
-type UserId = TL.Text
-
-data Subscriber = Subscriber Integer TargetType Code UserId -- id target(example:SMS) code (example:phone_number) userid
-     deriving (Show)

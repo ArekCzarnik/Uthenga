@@ -17,4 +17,4 @@ test:
     - sudo mv /tmp/shc /usr/bin
   override:
     - stack test --no-terminal --coverage
-    - stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN combined uthenga-test
+    - stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN Uthenga uthenga-test

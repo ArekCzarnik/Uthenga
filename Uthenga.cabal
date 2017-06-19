@@ -31,12 +31,9 @@ executable uthenga
   build-depends:       base
                      , bytestring
                      , text
-                     , hspec
                      , scotty
-                     , HUnit
                      , hedis
                      , string-conversions
-                     , QuickCheck
                      , Uthenga
   default-language:    Haskell2010
 

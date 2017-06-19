@@ -2,12 +2,12 @@
 
 Uthenga is a simple user-facing messaging server written in Haskell.
 
+[![Build Status](https://circleci.com/gh/ArekCzarnik/Uthenga.svg?style=shield&circle-token=c7a64cfa4a1279a9a3d2a0e67209394ea3cafddf)](https://circleci.com/gh/ArekCzarnik/Uthenga.svg?style=shield)
 [![Coverage Status](https://coveralls.io/repos/github/ArekCzarnik/Uthenga/badge.svg?branch=master&service=github)](https://coveralls.io/repos/github/ArekCzarnik/Uthenga/badge.svg?branch=master)
 
 
 # Overview
 Uthenga is in an early state (release 0.1). 
-
 
 The goal of Uthenga is to be a fast message bus for user interaction of data between multiple devices:
 

@@ -13,6 +13,8 @@ dependencies:
     
 test:
   pre:
-    - stack install stack-hpc-coveralls
+    - curl -L https://github.com/rubik/stack-hpc-coveralls/releases/download/v0.0.4.0/shc-linux-x64-7.8.4.tar.bz2 | tar jx -C /tmp
+    - sudo mv /tmp/shc /usr/bin
   override:
-    - stack test :argon-test --no-terminal --coverage
+    - stack test
+    - stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN combined all

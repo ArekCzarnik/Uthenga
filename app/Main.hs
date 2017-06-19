@@ -17,8 +17,8 @@ main = do
   conn <- setup
   scotty 3000 $ do
     middleware logStdout -- log all requests; for production use logStdout
-    get "/:queue/:value/:expire" (postJob conn)
-    post "/:queue/:value/:expire" (postJob conn)
+    get "/jobs" (text "")
+    post "/jobs/:queue/:value/:expire" (postJob conn)
 
 
 postJob :: Connection -> ActionM ()

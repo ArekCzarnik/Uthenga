@@ -12,5 +12,7 @@ dependencies:
     - stack build --fast
     
 test:
+  pre:
+    - stack install stack-hpc-coveralls
   override:
-    - stack test
+    - stack test :argon-test --no-terminal --coverage

@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
 module Types.Subscriber where
 
@@ -7,15 +7,11 @@ import GHC.Generics
 import Data.Aeson
 
 data TargetType = SMS | FIREBASE | APNS
-     deriving (Show)
+     deriving (Show, Enum)
 
 data Subscriber = Subscriber {
       id :: Integer
     , target :: Text
     , code :: Text
     , userid :: Text
-    } deriving (Generic, Show)
-
-instance FromJSON Subscriber
-instance ToJSON Subscriber
-
+    } deriving (Generic, Show, ToJSON, FromJSON)

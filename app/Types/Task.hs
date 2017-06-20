@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
 module Types.Task where
 
@@ -11,7 +11,4 @@ data Task = Task {
     , code :: Text
     , value :: Text
     , expire :: Int
-} deriving (Generic, Show)
-
-instance FromJSON Task
-instance ToJSON Task
+} deriving (Generic, Show, ToJSON, FromJSON)

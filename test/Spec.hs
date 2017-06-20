@@ -14,5 +14,9 @@ main = do
         it "responds with 200" $ do
           get "/tasks" `shouldRespondWith` 200
 
+      describe "GET /subscribers" $ do
+        it "responds with 200" $ do
+          get "/subscribers" `shouldRespondWith` 200
+
 setup :: IO Connection
 setup = connect disqueConnectInfo

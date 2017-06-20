@@ -54,6 +54,7 @@ executable uthenga
     , wai-extra
     , Uthenga
   other-modules:
+      Handlers.Task
       Types.Subscriber
       Types.Task
   default-language: Haskell2010

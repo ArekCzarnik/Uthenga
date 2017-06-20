@@ -7,7 +7,7 @@ Uthenga is a simple user-facing messaging server written in Haskell.
 
 
 # Overview
-Uthenga is in an early state (release 0.1). 
+Uthenga is in an very early state (release 0.1). 
 
 The goal of Uthenga is to be a fast message bus for user interaction of data between multiple devices:
 

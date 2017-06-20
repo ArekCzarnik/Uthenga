@@ -4,6 +4,7 @@ module Main where
 
 import Web.Scotty
 import Database.Disque
+import Network.Wai.Middleware.RequestLogger (logStdout)
 import Control.Monad.IO.Class
 import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL

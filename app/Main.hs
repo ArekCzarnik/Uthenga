@@ -20,7 +20,7 @@ main = do
     middleware logStdout -- log all requests; for production use logStdout
     get "/subscribers" (text $ cs $ encode subscriber)
     get "/tasks" (text $ cs $ encode task)
-    post "/tasks/:queue/:value/:expire" (postJob conn)
+    post "/tasks/:queue/:value/:expire" (addTask conn)
 
 setup :: IO Connection
 setup = connect disqueConnectInfo

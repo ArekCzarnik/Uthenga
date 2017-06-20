@@ -4,20 +4,21 @@ module Main where
 
 import Web.Scotty
 import Database.Disque
-import Network.Wai.Middleware.RequestLogger (logStdoutDev, logStdout)
 import Control.Monad.IO.Class
 import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL
 import Data.String.Conversions (cs)
-import Domain ()
+import Domain
+import Data.Aeson (encode)
 
 
 main :: IO ()
 main = do
+  let subscriber = Subscriber 1 "" "" ""
   conn <- setup
   scotty 3000 $ do
     middleware logStdout -- log all requests; for production use logStdout
-    get "/jobs" (text "")
+    get "/jobs" (text $ cs $ encode subscriber)
     post "/jobs/:queue/:value/:expire" (postJob conn)
 
 

@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/uthenga
+    docker:
+      - image: haskell
+    steps:
+      - checkout
+      - run: curl -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz | tar zx -C /tmp
+      - run: sudo mv /tmp/stack-1.4.0-linux-x86_64/stack /usr/bin
+      - run: stack setup
+      - run: stack build
+      - run: stack test

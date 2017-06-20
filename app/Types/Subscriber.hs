@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Domain where
+module Types.Subscriber where
 
 import Data.Text.Lazy
 import GHC.Generics
@@ -18,3 +18,4 @@ data Subscriber = Subscriber {
 
 instance FromJSON Subscriber
 instance ToJSON Subscriber
+

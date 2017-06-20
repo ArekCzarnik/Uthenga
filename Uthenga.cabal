@@ -54,7 +54,8 @@ executable uthenga
     , wai-extra
     , Uthenga
   other-modules:
-      Domain
+      Types.Subscriber
+      Types.Task
   default-language: Haskell2010
 
 test-suite uthenga-test

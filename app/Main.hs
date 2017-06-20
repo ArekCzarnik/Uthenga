@@ -9,18 +9,21 @@ import Control.Monad.IO.Class
 import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL
 import Data.String.Conversions (cs)
-import Domain
+import Types.Task
+import Types.Subscriber
 import Data.Aeson (encode)
 
 
 main :: IO ()
 main = do
+  let task = Task 1 "" "" 0
   let subscriber = Subscriber 1 "" "" ""
   conn <- setup
   scotty 3000 $ do
     middleware logStdout -- log all requests; for production use logStdout
-    get "/jobs" (text $ cs $ encode subscriber)
-    post "/jobs/:queue/:value/:expire" (postJob conn)
+    get "/subscribers" (text $ cs $ encode subscriber)
+    get "/tasks" (text $ cs $ encode task)
+    post "/tasks/:queue/:value/:expire" (postJob conn)
 
 
 postJob :: Connection -> ActionM ()

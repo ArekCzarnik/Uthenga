@@ -58,3 +58,4 @@ tests:
     - Uthenga
     - hspec-wai
     - hspec
+    - hspec-wai-json

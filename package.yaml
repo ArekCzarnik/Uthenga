@@ -34,19 +34,27 @@ executables:
     - hedis
     - aeson
     - string-conversions
+    - wai
+    - warp
     - wai-extra
     - Uthenga
 tests:
   uthenga-test:
     main: Spec.hs
-    source-dirs: test
+    source-dirs: test app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - base
-    - hspec
-    - HUnit
-    - QuickCheck
+    - scotty
+    - hedis
+    - aeson
+    - string-conversions
+    - wai
+    - warp
+    - wai-extra
     - Uthenga
+    - hspec-wai
+    - hspec

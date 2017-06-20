@@ -1,37 +1,18 @@
-
 {-# LANGUAGE OverloadedStrings #-}
 
-import qualified Data.Text as T
-
-import Data.Text (Text)
-import Data.ByteString (ByteString)
-import Test.Hspec
-import Test.HUnit                     (Assertion, assertBool, assertFailure,
-                                       (@=?), (@?=))
-
+import Application (app)
 import Database.Disque
+import Test.Hspec
+import Test.Hspec.Wai
 
 main :: IO ()
 main = do
-  conn <- setupDisque
-  hspec (specs conn)
+  disqueConnection <- setup
+  hspec $
+    with (app disqueConnection) $ do
+      describe "GET /tasks" $ do
+        it "responds with 200" $ do
+          get "/tasks" `shouldRespondWith` 200
 
-dq = runDisque
-
-isRight (Right _) = True
-isRight _         = False
-
-specs c = do
-  describe "Database.Disque" $ do
-    it "Sanity Check" $ do
-      assertBool "Sanity Check" True
-    it "Adds Jobs" $ do
-      pendingWith "Implement disque-server manager."
-      -- res <- dq c $ do Right s <- addjob "test_queue" "" 0
-      --                  getjob ["test_queue"]
-      -- assertBool "Sanity Check" $ isRight res
-
-setupDisque = do
-  putStrLn "Starting Disque..."
-  conn <- connect $ disqueConnectInfo { connectHost = "192.168.1.104" }
-  return conn
+setup :: IO Connection
+setup = connect disqueConnectInfo

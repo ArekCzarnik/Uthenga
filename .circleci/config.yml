@@ -3,11 +3,11 @@ jobs:
   build:
     working_directory: ~/uthenga
     docker:
-      - image: ubuntu:14.04
+      - image: ubuntu
     steps:
       - checkout
-      - run: ls -la
-      - run: wget -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz
+      - run: apt-get update && apt-get -y install curl
+      - run: curl -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz | tar zx -C /tmp
       - run: sudo mv /tmp/stack-1.4.0-linux-x86_64/stack /usr/bin
       - run: stack setup
       - run: stack build

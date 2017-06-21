@@ -15,8 +15,9 @@ jobs:
       - save_cache:
           paths:
             - ~/.stack
+            - ~/.stack-work
           key: uthenga-cache
 
       - run: stack test --no-terminal --coverage
 
-      - run: stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN Uthenga uthenga-test
+      - run: shc --repo-token=$COVERALLS_REPO_TOKEN Uthenga uthenga-test

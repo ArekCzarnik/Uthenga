@@ -9,6 +9,6 @@ jobs:
       - run: apt-get update && apt-get -y install curl
       - run: curl -L https://github.com/commercialhaskell/stack/releases/download/v1.4.0/stack-1.4.0-linux-x86_64.tar.gz | tar zx -C /tmp
       - run: mv /tmp/stack-1.4.0-linux-x86_64/stack ~/uthenga
-      - run: stack setup
-      - run: stack build
-      - run: stack test
+      - run: ./stack setup
+      - run: ./stack build
+      - run: ./stack test

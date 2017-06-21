@@ -6,6 +6,6 @@ jobs:
       - image: arekczarnik/docker-circleci-haskell
     steps:
       - checkout
-      - run: ./stack setup
-      - run: ./stack build
-      - run: ./stack test
+      - run: stack setup
+      - run: stack build
+      - run: stack test

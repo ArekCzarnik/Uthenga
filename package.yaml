@@ -38,6 +38,7 @@ executables:
     - wai
     - warp
     - wai-extra
+    - rethinkdb
     - Uthenga
 tests:
   uthenga-test:
@@ -59,4 +60,5 @@ tests:
     - Uthenga
     - hspec-wai
     - hspec
+    - rethinkdb
     - hspec-wai-json

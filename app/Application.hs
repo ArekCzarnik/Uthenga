@@ -21,10 +21,10 @@ app disqueConnection rethinkConnection =
     middleware logStdout -- log all requests; for production use logStdout
     get "/subscribers" (text $ cs $ encode subscriber)
     get "/tasks" $ json task
-    post "/tasks/:queue/:value/:expire" (maybeAddTask disqueConnection)
+    post "/tasks/:queue/:value/:expire" (shouldAddTask disqueConnection)
 
-maybeAddTask :: Maybe Connection -> ActionM ()
-maybeAddTask maybeConn =
+shouldAddTask :: Maybe Connection -> ActionM ()
+shouldAddTask maybeConn =
     case maybeConn of
             Just connection -> addTask connection
-            Nothing -> text "disque current offline?"
+            Nothing -> text "disque current offline!"

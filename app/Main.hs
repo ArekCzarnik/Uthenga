@@ -12,7 +12,7 @@ main = do
   putStrLn "[Start Uthenga 0.1 by HackForce]"
   disqueConnection <- setupDisque
   rethinkConnection <- setupRethinkDB
-  taskApp <- app disqueConnection rethinkConnection
+  taskApp <- app (Just disqueConnection) (Just rethinkConnection)
   run 3000 taskApp
 
 setupDisque :: IO Connection

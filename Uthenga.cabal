@@ -27,7 +27,6 @@ library
       src
   exposed-modules:
       Database.Disque
-      Database.MockDisque
   other-modules:
       Paths_Uthenga
   build-depends:

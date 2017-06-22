@@ -15,7 +15,6 @@ library:
   source-dirs: src
   exposed-modules:
   - Database.Disque
-  - Database.MockDisque
   dependencies:
   - base >=4.7 && <5
   - transformers

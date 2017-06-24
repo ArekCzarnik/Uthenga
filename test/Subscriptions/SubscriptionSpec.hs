@@ -1,15 +1,16 @@
 {-# LANGUAGE OverloadedStrings, QuasiQuotes #-}
 
+
+module Subscriptions.SubscriptionSpec (spec) where
+
 import Application (app)
 import Test.Hspec
 import Test.Hspec.Wai
 import Test.Hspec.Wai.JSON
 import Data.Aeson (Value(..), object, (.=))
 
-
-main :: IO ()
-main = do
-  hspec $
+spec :: Spec
+spec = do
     with (app Nothing Nothing) $ do
       describe "Operation on /tasks Resource" $ do
         it "responds with 200" $ do
@@ -18,6 +19,5 @@ main = do
       describe "GET /subscribers" $ do
         it "responds with 200" $ do
           get "/subscribers" `shouldRespondWith` 200
-
 
 

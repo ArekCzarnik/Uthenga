@@ -15,15 +15,21 @@ library:
   source-dirs: src
   exposed-modules:
   - Database.Disque
+  - Application
   dependencies:
-  - base >=4.7 && <5
-  - transformers
-  - aeson
-  - hedis
+    - base
+    - scotty
+    - hedis
+    - aeson
+    - string-conversions
+    - wai
+    - warp
+    - wai-extra
+    - rethinkdb
 executables:
   uthenga:
     main: Main.hs
-    source-dirs: app
+    source-dirs: src
     ghc-options:
     - -threaded
     - -rtsopts
@@ -38,15 +44,12 @@ executables:
     - warp
     - wai-extra
     - rethinkdb
-    - Uthenga
 tests:
   uthenga-test:
-    main: Spec.hs
-    source-dirs: test app
+    main: Main.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+    - -Wall
     dependencies:
     - base
     - scotty
@@ -60,4 +63,10 @@ tests:
     - hspec-wai
     - hspec
     - rethinkdb
+    - fixie
+    - hspec-discover
+    - mtl
+    - template-haskell
+    - transformers
     - hspec-wai-json
+    - Uthenga

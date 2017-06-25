@@ -5,6 +5,9 @@ jobs:
     docker:
       - image: arekczarnik/docker-circleci-haskell
       - image: mariadb:latest
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: uthenga
       - image: richnorth/disque:latest
     steps:
       - checkout

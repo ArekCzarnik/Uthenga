@@ -19,4 +19,4 @@ setupDisque :: IO Connection
 setupDisque = connect disqueConnectInfo
 
 setupDB :: IO Mysql.MySQLConn
-setupDB = Mysql.connect Mysql.defaultConnectInfo
+setupDB = Mysql.connect Mysql.defaultConnectInfo { Mysql.ciDatabase = "uthenga" }

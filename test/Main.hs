@@ -18,7 +18,7 @@ setupDisque :: MonadDisque m => m Disque.Connection
 setupDisque = connect Disque.disqueConnectInfo
 
 setupDB :: IO Mysql.MySQLConn
-setupDB = Mysql.connect Mysql.defaultConnectInfo
+setupDB = Mysql.connect Mysql.defaultConnectInfo { Mysql.ciDatabase = "uthenga" }
 
 -- https://lexi-lambda.github.io/blog/2016/10/03/using-types-to-unit-test-in-haskell/
 

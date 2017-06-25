@@ -17,5 +17,6 @@ jobs:
             - ~/.stack
           key: cache
 
+      - run: docker ps
       - run: stack test --no-terminal --coverage
       - run: stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN Uthenga uthenga-test

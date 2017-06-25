@@ -1,5 +1,4 @@
-extra-deps:
-  - fixie-1.0.0
+extra-deps: []
 resolver: lts-8.18
 flags: {}
 packages:

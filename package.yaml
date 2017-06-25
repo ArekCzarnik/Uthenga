@@ -63,10 +63,7 @@ tests:
     - hspec-wai
     - hspec
     - rethinkdb
-    - fixie
+    - test-fixture
     - hspec-discover
-    - mtl
-    - template-haskell
-    - transformers
     - hspec-wai-json
     - Uthenga

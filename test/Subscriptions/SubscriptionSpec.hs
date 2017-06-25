@@ -7,10 +7,12 @@ import Application (app)
 import Test.Hspec
 import Test.Hspec.Wai
 import Test.Hspec.Wai.JSON
-import Data.Aeson (Value(..), object, (.=))
+import Database.Disque
+import qualified Database.RethinkDB                   as RethinkDB
 
-spec :: Spec
-spec = do
+
+spec :: Connection ->  RethinkDB.RethinkDBHandle -> Spec
+spec connection handle = do
     with (app Nothing Nothing) $ do
       describe "Operation on /tasks Resource" $ do
         it "responds with 200" $ do

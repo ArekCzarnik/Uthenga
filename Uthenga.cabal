@@ -45,7 +45,8 @@ library
     , wai
     , warp
     , wai-extra
-    , rethinkdb
+    , http-types
+    , mysql-haskell
   default-language: Haskell2010
 
 executable uthenga
@@ -64,7 +65,8 @@ executable uthenga
     , wai
     , warp
     , wai-extra
-    , rethinkdb
+    , http-types
+    , mysql-haskell
   other-modules:
       Application
       Database.Disque
@@ -92,7 +94,7 @@ test-suite uthenga-test
     , Uthenga
     , hspec-wai
     , hspec
-    , rethinkdb
+    , mysql-haskell
     , test-fixture
     , hspec-discover
     , hspec-wai-json

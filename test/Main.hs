@@ -1,27 +1,29 @@
-import Database.Disque
-import qualified Database.RethinkDB as RethinkDB
+
+import qualified Database.Disque as Disque
+import qualified Database.MySQL.Base as Mysql
 import Subscriptions.SubscriptionSpec
 import Test.Hspec
 
 main :: IO ()
 main = do
   disqueConnection <- setupDisque
-  rethinkConnection <- setupRethinkDB
-  hspec (mainspec disqueConnection rethinkConnection)
+  dbConnection <- setupDB
+  hspec (mainspec disqueConnection dbConnection)
 
-mainspec :: Connection -> RethinkDB.RethinkDBHandle -> Spec
-mainspec connection handle = do
-  describe "All Subscription Sepcs" (spec connection handle)
+mainspec :: Disque.Connection -> Mysql.MySQLConn -> Spec
+mainspec connection db = do
+  describe "All Subscription Sepcs" (spec connection db)
 
-setupDisque :: IO Connection
-setupDisque = connect disqueConnectInfo
+setupDisque :: MonadDisque m => m Disque.Connection
+setupDisque = connect Disque.disqueConnectInfo
 
-setupRethinkDB :: IO RethinkDB.RethinkDBHandle
-setupRethinkDB = RethinkDB.connect "localhost" 28015 Nothing
+setupDB :: IO Mysql.MySQLConn
+setupDB = Mysql.connect Mysql.defaultConnectInfo
 
+-- https://lexi-lambda.github.io/blog/2016/10/03/using-types-to-unit-test-in-haskell/
 
-instance MonadRethinkDB IO where
-    rbconnect = connect
+instance MonadDisque IO where
+    connect = Disque.connect
 
-class Monad monad => MonadRethinkDB monad where
-    rbconnect :: String -> Integer -> Maybe String -> monad Connection
+class Monad monad => MonadDisque monad where
+    connect :: Disque.ConnectInfo -> monad Disque.Connection

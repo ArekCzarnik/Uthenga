@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/uthenga
     docker:
       - image: arekczarnik/docker-circleci-haskell
-      - image: rethinkdb:latest
+      - image: mariadb:latest
       - image: richnorth/disque:latest
     steps:
       - checkout

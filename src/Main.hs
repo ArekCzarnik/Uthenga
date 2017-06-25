@@ -5,18 +5,18 @@ module Main where
 import Application (app)
 import Database.Disque
 import Network.Wai.Handler.Warp (run)
-import qualified Database.RethinkDB as RethinkDB
+import qualified Database.MySQL.Base as Mysql
 
 main :: IO ()
 main = do
   putStrLn "[Start Uthenga 0.1 by HackForce]"
   disqueConnection <- setupDisque
-  rethinkConnection <- setupRethinkDB
-  taskApp <- app (Just disqueConnection) (Just rethinkConnection)
+  dbConnection <- setupDB
+  taskApp <- app (Just disqueConnection) (Just dbConnection)
   run 3000 taskApp
 
 setupDisque :: IO Connection
 setupDisque = connect disqueConnectInfo
 
-setupRethinkDB :: IO RethinkDB.RethinkDBHandle
-setupRethinkDB = RethinkDB.connect "localhost" 28015 Nothing
+setupDB :: IO Mysql.MySQLConn
+setupDB = Mysql.connect Mysql.defaultConnectInfo

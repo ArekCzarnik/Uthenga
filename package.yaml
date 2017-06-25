@@ -25,7 +25,8 @@ library:
     - wai
     - warp
     - wai-extra
-    - rethinkdb
+    - http-types
+    - mysql-haskell
 executables:
   uthenga:
     main: Main.hs
@@ -43,7 +44,8 @@ executables:
     - wai
     - warp
     - wai-extra
-    - rethinkdb
+    - http-types
+    - mysql-haskell
 tests:
   uthenga-test:
     main: Main.hs
@@ -62,7 +64,7 @@ tests:
     - Uthenga
     - hspec-wai
     - hspec
-    - rethinkdb
+    - mysql-haskell
     - test-fixture
     - hspec-discover
     - hspec-wai-json

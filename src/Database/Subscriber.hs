@@ -15,20 +15,27 @@ import System.IO.Streams.List
 import Data.String.Conversions              (cs)
 
 
-usersTableSQL :: Query
-usersTableSQL =
+createTableSQL :: Query
+createTableSQL =
     "CREATE TABLE IF NOT EXISTS subscriber (id BIGINT NOT NULL AUTO_INCREMENT, target VARCHAR(255) NOT NULL,code VARCHAR(255) NOT NULL, userid VARCHAR(255) NOT NULL,CONSTRAINT pk PRIMARY KEY (id));"
 
-insertTokenSQL :: Query
-insertTokenSQL =
+insertSQL :: Query
+insertSQL =
     "INSERT INTO subscriber (target, code, userid) VALUES (?, ?, ?);"
 
+selectSQL :: Query
+selectSQL = "SELECT * FROM subscriber"
 
 insertSubscriber :: MySQLConn -> Maybe Subscriber -> ActionT TL.Text IO ()
 insertSubscriber mysqlConnection Nothing = return ()
 insertSubscriber mysqlConnection (Just (Subscriber id_ target_ code_ userid_)) = do
-  _ <- liftIO $ execute mysqlConnection insertTokenSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
+  _ <- liftIO $ execute mysqlConnection insertSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
   return ()
+
+-- listSubscriber :: MySQLConn -> IO [Subscriber]
+-- listSubscriber pool = do
+--      (defs, is) <- query_ pool selectSQL
+--      return $ Prelude.map (\(id, title, bodyText) -> Subscriber id title bodyText) (System.IO.Streams.List.toList is)
 
 
 drain :: IO ([ColumnDef], InputStream [MySQLValue]) -> IO [[MySQLValue]]

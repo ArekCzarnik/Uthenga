@@ -1,8 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
 
 import qualified Database.Disque as Disque
 import qualified Database.MySQL.Base as Mysql
 import Subscriptions.SubscriptionSpec
 import Test.Hspec
+
 
 main :: IO ()
 main = do

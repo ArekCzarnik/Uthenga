@@ -22,7 +22,7 @@ spec connection db = do
         it "responds with 200" $ do
           get "/subscribers" `shouldRespondWith` 200
         it "responds with 200" $ do
-          post "/subscribers" "" `shouldRespondWith` 201
+          post "/subscribers" [json|{target:"form test",userid:"1",code:"1",id: 1}|] `shouldRespondWith` 201
 
 
 

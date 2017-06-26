@@ -22,6 +22,7 @@ library:
     - hedis
     - aeson
     - string-conversions
+    - io-streams
     - wai
     - warp
     - wai-extra
@@ -41,6 +42,7 @@ executables:
     - hedis
     - aeson
     - string-conversions
+    - io-streams
     - wai
     - warp
     - wai-extra

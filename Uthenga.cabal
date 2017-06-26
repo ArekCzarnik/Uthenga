@@ -29,6 +29,7 @@ library
       Database.Disque
       Application
   other-modules:
+      Database.Subscriber
       Handlers.Task
       Main
       Types.Subscriber
@@ -42,6 +43,7 @@ library
     , hedis
     , aeson
     , string-conversions
+    , io-streams
     , wai
     , warp
     , wai-extra
@@ -62,6 +64,7 @@ executable uthenga
     , hedis
     , aeson
     , string-conversions
+    , io-streams
     , wai
     , warp
     , wai-extra
@@ -70,6 +73,7 @@ executable uthenga
   other-modules:
       Application
       Database.Disque
+      Database.Subscriber
       Handlers.Task
       Types.Subscriber
       Types.Task

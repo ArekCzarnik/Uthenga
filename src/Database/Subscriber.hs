@@ -11,8 +11,6 @@ import System.IO.Streams
 import System.IO.Streams.List
 import Data.String.Conversions              (cs)
 
-
-
 createTableSQL :: Query
 createTableSQL =
     "CREATE TABLE IF NOT EXISTS subscriber (id BIGINT NOT NULL AUTO_INCREMENT, target VARCHAR(255) NOT NULL,code VARCHAR(255) NOT NULL, userid VARCHAR(255) NOT NULL,CONSTRAINT pk PRIMARY KEY (id));"
@@ -23,7 +21,6 @@ insertSQL =
 
 selectSQL :: Query
 selectSQL = "SELECT * FROM subscriber"
-
 
 createTable :: MySQLConn -> IO ()
 createTable mysqlConnection = do

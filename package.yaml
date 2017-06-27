@@ -15,6 +15,7 @@ library:
   source-dirs: src
   exposed-modules:
   - Database.Disque
+  - Database.Subscriber
   - Application
   dependencies:
     - base

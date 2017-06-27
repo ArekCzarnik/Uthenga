@@ -27,9 +27,9 @@ library
       src
   exposed-modules:
       Database.Disque
+      Database.Subscriber
       Application
   other-modules:
-      Database.Subscriber
       Handlers.Task
       Main
       Types.Subscriber

@@ -4,12 +4,14 @@ import qualified Database.Disque as Disque
 import qualified Database.MySQL.Base as Mysql
 import Subscriptions.SubscriptionSpec
 import Test.Hspec
+import Database.Subscriber
 
 
 main :: IO ()
 main = do
   disqueConnection <- setupDisque
   dbConnection <- setupDB
+  createTable dbConnection
   hspec (mainspec disqueConnection dbConnection)
 
 mainspec :: Disque.Connection -> Mysql.MySQLConn -> Spec

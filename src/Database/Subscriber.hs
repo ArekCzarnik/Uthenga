@@ -15,6 +15,7 @@ import System.IO.Streams.List
 import Data.String.Conversions              (cs)
 
 
+
 createTableSQL :: Query
 createTableSQL =
     "CREATE TABLE IF NOT EXISTS subscriber (id BIGINT NOT NULL AUTO_INCREMENT, target VARCHAR(255) NOT NULL,code VARCHAR(255) NOT NULL, userid VARCHAR(255) NOT NULL,CONSTRAINT pk PRIMARY KEY (id));"
@@ -26,9 +27,15 @@ insertSQL =
 selectSQL :: Query
 selectSQL = "SELECT * FROM subscriber"
 
+
+createTable :: MySQLConn -> IO ()
+createTable mysqlConnection = do
+   _ <- liftIO $ execute_ mysqlConnection createTableSQL
+   return ()
+
 insertSubscriber :: MySQLConn -> Maybe Subscriber -> ActionT TL.Text IO ()
-insertSubscriber mysqlConnection Nothing = return ()
-insertSubscriber mysqlConnection (Just (Subscriber id_ target_ code_ userid_)) = do
+insertSubscriber _ Nothing = return ()
+insertSubscriber mysqlConnection (Just (Subscriber _ target_ code_ userid_)) = do
   _ <- liftIO $ execute mysqlConnection insertSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
   return ()
 

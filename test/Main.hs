@@ -15,8 +15,7 @@ main = do
   hspec (mainspec disqueConnection dbConnection)
 
 mainspec :: Disque.Connection -> Mysql.MySQLConn -> Spec
-mainspec connection db = do
-  describe "All Subscription Sepcs" (spec connection db)
+mainspec connection db = describe "All Subscription Sepcs" (spec connection db)
 
 setupDisque :: MonadDisque m => m Disque.Connection
 setupDisque = connect Disque.disqueConnectInfo

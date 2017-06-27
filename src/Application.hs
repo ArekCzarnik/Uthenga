@@ -3,8 +3,7 @@
 module Application where
 
 import Control.Monad.IO.Class
-import Data.Aeson (decode, encode)
-import Data.String.Conversions (cs)
+import Data.Aeson (decode)
 import Data.Text.Lazy (Text)
 import Database.Disque
 import qualified Database.MySQL.Base as Mysql

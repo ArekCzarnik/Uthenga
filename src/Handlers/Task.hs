@@ -13,8 +13,8 @@ addTask :: Connection -> ActionM ()
 addTask conn = do
   queue <- param "queue" :: ActionM TL.Text
   value <- param "value" :: ActionM TL.Text
-  expire <- param "expire" :: ActionM TL.Text
-  createdJob <- liftIO (runDisque conn $ addjob (cs queue) (cs value) 0)
+  expire <- param "expire" :: ActionM Int
+  createdJob <- liftIO (runDisque conn $ addjob (cs queue) (cs value) expire)
   case createdJob of
     Left val -> text (cs $ deconsReplay val)
     Right val -> text (cs val)

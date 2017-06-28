@@ -4,17 +4,12 @@ module Database.Subscriber where
 
 import Control.Monad.IO.Class
 import qualified Data.Text.Lazy as TL
-import qualified Data.Text.Lazy.Encoding as TL
-import qualified Data.ByteString.Lazy.Char8 as BL
-import qualified Data.Text as T
 import Web.Scotty.Internal.Types (ActionT)
 import Database.MySQL.Base
 import Types.Subscriber
 import System.IO.Streams
 import System.IO.Streams.List
 import Data.String.Conversions              (cs)
-
-
 
 createTableSQL :: Query
 createTableSQL =
@@ -27,7 +22,6 @@ insertSQL =
 selectSQL :: Query
 selectSQL = "SELECT * FROM subscriber"
 
-
 createTable :: MySQLConn -> IO ()
 createTable mysqlConnection = do
    _ <- liftIO $ execute_ mysqlConnection createTableSQL
@@ -39,11 +33,14 @@ insertSubscriber mysqlConnection (Just (Subscriber _ target_ code_ userid_)) = d
   _ <- liftIO $ execute mysqlConnection insertSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
   return ()
 
--- listSubscriber :: MySQLConn -> IO [Subscriber]
--- listSubscriber pool = do
---      (defs, is) <- query_ pool selectSQL
---      return $ Prelude.map (\(id, title, bodyText) -> Subscriber id title bodyText) (System.IO.Streams.List.toList is)
+listSubscriber :: MySQLConn -> IO [Subscriber]
+listSubscriber pool = do
+  result <- drain $ query_ pool selectSQL
+  return $ Prelude.map convertSubscriber result
 
+convertSubscriber [MySQLInt64 id_, MySQLText target_, MySQLText code_, MySQLText userid_]
+      = Subscriber (fromIntegral id_) (cs target_) (cs code_) (cs userid_)
+convertSubscriber _ = undefined
 
 drain :: IO ([ColumnDef], InputStream [MySQLValue]) -> IO [[MySQLValue]]
 drain action = do

@@ -27,3 +27,4 @@ The goal of Uthenga is to be a fast message bus for user interaction of data bet
 * https://github.com/winterland1989/mysql-haskell
 * https://github.com/creichert/disque.hs
 * https://github.com/facebook/Haxl
+* https://github.com/snoyberg/http-client

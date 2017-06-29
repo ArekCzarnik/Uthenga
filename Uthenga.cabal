@@ -30,6 +30,7 @@ library
       Database.Subscriber
       Application
   other-modules:
+      Handlers.Subscriber
       Handlers.Task
       Main
       Types.Subscriber
@@ -74,6 +75,7 @@ executable uthenga
       Application
       Database.Disque
       Database.Subscriber
+      Handlers.Subscriber
       Handlers.Task
       Types.Subscriber
       Types.Task

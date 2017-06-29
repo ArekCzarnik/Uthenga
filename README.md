@@ -15,3 +15,13 @@ The goal of Uthenga is to be a fast message bus for user interaction of data bet
 * Fast realtime messaging, as well as playback of messages from a Disque (Redis).
 * Reliable and scalable over multiple nodes
 * User-aware semantics to easily support messaging scenarios between people using multiple devices
+
+# Technical Overview
+
+* using plain old mysql for persistence
+* for task scheduler disque
+* twilio for sms sending
+
+* https://github.com/markandrus/twilio-haskell
+* https://github.com/winterland1989/mysql-haskell
+* https://github.com/creichert/disque.hs

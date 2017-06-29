@@ -29,6 +29,7 @@ library:
     - wai-extra
     - http-types
     - mysql-haskell
+    - resource-pool
 executables:
   uthenga:
     main: Main.hs
@@ -49,6 +50,7 @@ executables:
     - wai-extra
     - http-types
     - mysql-haskell
+    - resource-pool
 tests:
   uthenga-test:
     main: Main.hs
@@ -68,6 +70,7 @@ tests:
     - hspec-wai
     - hspec
     - mysql-haskell
+    - resource-pool
     - test-fixture
     - hspec-discover
     - hspec-wai-json

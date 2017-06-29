@@ -11,24 +11,19 @@ import Network.HTTP.Types.Status
 import Types.Subscriber
 import Web.Scotty
 import Web.Scotty.Internal.Types (ActionT)
+import Data.Pool (Pool, tryWithResource)
 
-showSubscribers :: Maybe Mysql.MySQLConn -> ActionM ()
-showSubscribers (Just connection) = do
-  subscribers <- liftIO $ listSubscriber connection
+showSubscribers :: Pool Mysql.MySQLConn -> ActionM ()
+showSubscribers dbPool = do
+  subscribers <- liftIO (tryWithResource dbPool listSubscriber)
   json subscribers
-showSubscribers Nothing = do
-  text "mysql current offline!"
-  status status500
 
-addSubscriber :: Maybe Mysql.MySQLConn -> ActionM ()
-addSubscriber (Just connection) = do
+addSubscriber :: Pool Mysql.MySQLConn -> ActionM ()
+addSubscriber dbPool = do
   subscriber <- parseSubscriber
-  insertSubscriber connection subscriber
+  liftIO $ tryWithResource dbPool $ insertSubscriber subscriber
   json subscriber
   status created201
-addSubscriber Nothing = do
-  text "mysql current offline!"
-  status status500
 
 -- Parse the request body into the Subscriber
 parseSubscriber :: ActionT Text IO (Maybe Subscriber)

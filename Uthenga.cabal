@@ -50,6 +50,7 @@ library
     , wai-extra
     , http-types
     , mysql-haskell
+    , resource-pool
   default-language: Haskell2010
 
 executable uthenga
@@ -71,6 +72,7 @@ executable uthenga
     , wai-extra
     , http-types
     , mysql-haskell
+    , resource-pool
   other-modules:
       Application
       Database.Disque
@@ -101,6 +103,7 @@ test-suite uthenga-test
     , hspec-wai
     , hspec
     , mysql-haskell
+    , resource-pool
     , test-fixture
     , hspec-discover
     , hspec-wai-json

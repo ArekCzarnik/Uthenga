@@ -10,14 +10,15 @@ import Network.Wai (Application)
 import Network.Wai.Middleware.RequestLogger (logStdout)
 import Types.Task
 import Web.Scotty
+import Data.Pool(Pool, createPool, withResource)
 
-app :: Maybe Connection -> Maybe Mysql.MySQLConn -> IO Application
-app disqueConnection mysqlConnection =
+app :: Connection -> Pool Mysql.MySQLConn -> IO Application
+app disqueConnection dbPool =
   scottyApp $ do
     let task = Task 1 "1" "1" 0
     middleware logStdout -- log all requests; for production use logStdout
-    get "/subscribers" $ showSubscribers mysqlConnection
-    post "/subscribers" (addSubscriber mysqlConnection)
+    get "/subscribers" $ showSubscribers dbPool
+    post "/subscribers" (addSubscriber dbPool)
     get "/tasks" . json $ task
     post "/tasks/:queue/:value/:expire" (shouldAddTask disqueConnection)
 

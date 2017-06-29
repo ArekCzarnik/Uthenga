@@ -5,17 +5,18 @@ import qualified Database.MySQL.Base as Mysql
 import Subscriptions.SubscriptionSpec
 import Test.Hspec
 import Database.Subscriber
+import Data.Pool(Pool,createPool,tryWithResource)
 
 
 main :: IO ()
 main = do
   disqueConnection <- setupDisque
-  dbConnection <- setupDB
-  createTable dbConnection
-  hspec (mainspec disqueConnection dbConnection)
+  dbPool <- createPool setupDB Mysql.close 1 40 10
+  _ <- tryWithResource dbPool createTable
+  hspec (mainspec disqueConnection dbPool)
 
-mainspec :: Disque.Connection -> Mysql.MySQLConn -> Spec
-mainspec connection db = describe "All Subscription Sepcs" (spec connection db)
+mainspec :: Disque.Connection -> Pool Mysql.MySQLConn -> Spec
+mainspec connection dbPool = describe "All Subscription Sepcs" (spec connection dbPool)
 
 setupDisque :: MonadDisque m => m Disque.Connection
 setupDisque = connect Disque.disqueConnectInfo

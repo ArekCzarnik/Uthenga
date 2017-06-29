@@ -27,9 +27,9 @@ createTable mysqlConnection = do
    _ <- liftIO $ execute_ mysqlConnection createTableSQL
    return ()
 
-insertSubscriber :: MySQLConn -> Maybe Subscriber -> ActionT TL.Text IO ()
-insertSubscriber _ Nothing = return ()
-insertSubscriber mysqlConnection (Just (Subscriber _ target_ code_ userid_)) = do
+insertSubscriber :: Maybe Subscriber -> MySQLConn -> IO ()
+insertSubscriber Nothing _ = return ()
+insertSubscriber (Just (Subscriber _ target_ code_ userid_)) mysqlConnection = do
   _ <- liftIO $ execute mysqlConnection insertSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
   return ()
 

@@ -18,7 +18,8 @@ app disqueConnection dbPool =
     let task = Task 1 "1" "1" 0
     middleware logStdout -- log all requests; for production use logStdout
     get "/subscribers" $ showSubscribers dbPool
-    delete "/subscribers/:id" $ showSubscribers dbPool
+    get "/subscribers/:id" $ showSubscriber dbPool
+    delete "/subscribers/:id" $ deleteSubscribers dbPool
     post "/subscribers" (addSubscriber dbPool)
     get "/tasks" . json $ task
     post "/tasks/:queue/:value/:expire" (shouldAddTask disqueConnection)

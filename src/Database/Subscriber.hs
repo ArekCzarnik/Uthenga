@@ -22,6 +22,9 @@ insertSQL =
 selectSQL :: Query
 selectSQL = "SELECT * FROM subscriber"
 
+selectWithIDSQL :: Query
+selectWithIDSQL = "SELECT * FROM subscriber WHERE id = ?"
+
 deleteSQL :: Query
 deleteSQL = "DELETE FROM subscriber WHERE id = ?"
 
@@ -37,10 +40,15 @@ insertSubscriber (Just (Subscriber _ target_ code_ userid_)) mysqlConnection = d
   return ()
 
 deleteSubscriber :: Integer -> MySQLConn -> IO ()
-deleteSubscriber id mysqlConnection = do
-   _ <- liftIO $ execute mysqlConnection deleteSQL [MySQLInt64 (fromIntegral id)]
+deleteSubscriber idSubscriber mysqlConnection = do
+   _ <- liftIO $ execute mysqlConnection deleteSQL [MySQLInt64 (fromIntegral idSubscriber)]
    return ()
-      
+
+fetchSubscriber :: Integer -> MySQLConn -> IO [Subscriber]
+fetchSubscriber idSubscriber pool = do
+  result <- drain $ query pool selectWithIDSQL [MySQLInt64 (fromIntegral idSubscriber)]
+  return $ Prelude.map convertSubscriber result
+
 listSubscriber :: MySQLConn -> IO [Subscriber]
 listSubscriber pool = do
   result <- drain $ query_ pool selectSQL

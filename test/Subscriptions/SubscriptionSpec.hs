@@ -22,10 +22,12 @@ spec connection dbPool = do
           post "/tasks/test/test/1" "" `shouldRespondWith` 200
 
       describe "GET /subscribers" $ do
-        it "fetch subscriber should responds with 200" $ do
-          get "/subscribers" `shouldRespondWith` 200
         it "create responds with 200" $ do
           post "/subscribers" [json|{target:"form test",userid:"1",code:"1",id: 1}|] `shouldRespondWith` 201
+        it "fetch subscriber should responds with 200" $ do
+          get "/subscribers" `shouldRespondWith` 200
+        it "fetch subscriber with id 1 should responds with 200" $ do
+          get "/subscribers/1" `shouldRespondWith` 200
         it "delete subscriber should response 200" $ do
           delete "/subscribers/1"  `shouldRespondWith` 200
 

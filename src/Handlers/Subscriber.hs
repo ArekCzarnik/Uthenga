@@ -18,6 +18,11 @@ showSubscribers dbPool = do
   subscribers <- liftIO (tryWithResource dbPool listSubscriber)
   json subscribers
 
+deleteSubscribers :: Pool Mysql.MySQLConn -> ActionM ()
+deleteSubscribers dbPool = do
+  subscribers <- liftIO (tryWithResource dbPool listSubscriber)
+  json subscribers
+
 addSubscriber :: Pool Mysql.MySQLConn -> ActionM ()
 addSubscriber dbPool = do
   subscriber <- parseSubscriber

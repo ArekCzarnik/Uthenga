@@ -22,6 +22,9 @@ insertSQL =
 selectSQL :: Query
 selectSQL = "SELECT * FROM subscriber"
 
+deleteSQL :: Query
+deleteSQL = "DELETE FROM subscriber WHERE id = ?"
+
 createTable :: MySQLConn -> IO ()
 createTable mysqlConnection = do
    _ <- liftIO $ execute_ mysqlConnection createTableSQL
@@ -33,11 +36,17 @@ insertSubscriber (Just (Subscriber _ target_ code_ userid_)) mysqlConnection = d
   _ <- liftIO $ execute mysqlConnection insertSQL [MySQLText (cs target_), MySQLText (cs code_), MySQLText (cs userid_)]
   return ()
 
+deleteSubscriber :: Integer -> MySQLConn -> IO ()
+deleteSubscriber id mysqlConnection = do
+   _ <- liftIO $ execute mysqlConnection deleteSQL [MySQLInt64 (fromIntegral id)]
+   return ()
+      
 listSubscriber :: MySQLConn -> IO [Subscriber]
 listSubscriber pool = do
   result <- drain $ query_ pool selectSQL
   return $ Prelude.map convertSubscriber result
 
+convertSubscriber :: [MySQLValue] -> Subscriber
 convertSubscriber [MySQLInt64 id_, MySQLText target_, MySQLText code_, MySQLText userid_]
       = Subscriber (fromIntegral id_) (cs target_) (cs code_) (cs userid_)
 convertSubscriber _ = undefined

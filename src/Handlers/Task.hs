@@ -22,12 +22,6 @@ addTask conn = do
     Left val -> text (cs $ deconsReplay val)
     Right val -> text (cs val)
 
-getTask :: Connection -> ActionM ()
-getTask conn = do
-  queue <- param "queue" :: ActionM TL.Text
-  task <- liftIO (runDisque conn $ getjobs [cs queue] 1)
-  text (cs $ show task)
-
 pullTask :: Connection -> IO ()
 pullTask conn = do
   job <- liftIO (runDisque conn $ getjobs ["sms"] 1)

@@ -20,11 +20,12 @@ app disqueConnection dbPool = do
   _ <- forkIO (pullTask disqueConnection)
   scottyApp $ do
     middleware logStdout -- log all requests; for production use logStdout
+--  Subscriber part
     get "/subscribers" $ showSubscribers dbPool
     get "/subscribers/:id" $ showSubscriber dbPool
     delete "/subscribers/:id" $ deleteSubscribers dbPool
     post "/subscribers" (addSubscriber dbPool)
-    get "/tasks/:queue" (getTask disqueConnection)
+--  Task part
     post "/tasks/:queue/:value/:expire" (shouldAddTask disqueConnection)
 
 

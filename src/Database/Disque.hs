@@ -78,7 +78,7 @@ type JobId = ByteString
 type Queue = ByteString
 type Data  = ByteString
 
-data Job = Job Queue JobId Data
+data Job = Job {queue:: Queue, jobid :: JobId, jobdata :: Data}
            deriving Show
 
 instance RedisResult Job where

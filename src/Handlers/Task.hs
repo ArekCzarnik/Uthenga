@@ -22,9 +22,31 @@ addTask conn = do
     Left val -> text (cs $ deconsReplay val)
     Right val -> text (cs val)
 
+getTask :: Connection -> ActionM ()
+getTask conn = do
+  queue <- param "queue" :: ActionM TL.Text
+  task <- liftIO (runDisque conn $ getjobs [cs queue] 1)
+  text (cs $ show task)
+
+pullTask :: Connection -> IO ()
+pullTask conn = do
+  job <- liftIO (runDisque conn $ getjobs ["sms"] 1)
+  handleTask job
+  pullTask conn
+  return ()
+
+handleTask :: Either Reply [Job] -> IO ()
+handleTask (Right val) = do
+  print val
+  return ()
+handleTask (Left val) = do
+  print val
+  return ()
+
+
 deconsReplay :: Reply -> B.ByteString
 deconsReplay replay =
       case replay of
-            Error code -> code
+            SingleLine code -> code
             _ -> ""
 

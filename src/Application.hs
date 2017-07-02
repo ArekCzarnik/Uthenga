@@ -8,21 +8,28 @@ import Handlers.Task
 import Handlers.Subscriber
 import Network.Wai (Application)
 import Network.Wai.Middleware.RequestLogger (logStdout)
-import Types.Task
 import Web.Scotty
-import Data.Pool(Pool, createPool, withResource)
+import Data.Pool(Pool)
+import Control.Concurrent.Chan (Chan,newChan,readChan)
+import Control.Concurrent (forkIO)
 
 app :: Connection -> Pool Mysql.MySQLConn -> IO Application
-app disqueConnection dbPool =
+app disqueConnection dbPool = do
+  messages <- newChan
+  _ <- forkIO (messageReader messages)
+  _ <- forkIO (pullTask disqueConnection)
   scottyApp $ do
-    let task = Task 1 "1" "1" 0
     middleware logStdout -- log all requests; for production use logStdout
     get "/subscribers" $ showSubscribers dbPool
     get "/subscribers/:id" $ showSubscriber dbPool
     delete "/subscribers/:id" $ deleteSubscribers dbPool
     post "/subscribers" (addSubscriber dbPool)
-    get "/tasks" . json $ task
+    get "/tasks/:queue" (getTask disqueConnection)
     post "/tasks/:queue/:value/:expire" (shouldAddTask disqueConnection)
 
 
+messageReader :: Chan String -> IO ()
+messageReader channel = do
+    msg <- readChan channel
+    putStrLn (" read: " ++ msg)
 

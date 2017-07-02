@@ -33,7 +33,7 @@ handleTask taskChannel (Right joblist) = do
   writeChan taskChannel currentJob
   return ()
 handleTask _ (Left val) = do
-  print "error found job"
+  print (show val)
   return ()
 
 jobSender :: Connection -> Chan Job -> IO ()

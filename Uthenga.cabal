@@ -33,6 +33,7 @@ library
       Handlers.Subscriber
       Handlers.Task
       Main
+      Types.Job
       Types.Subscriber
       Types.Task
       Paths_Uthenga
@@ -79,6 +80,7 @@ executable uthenga
       Database.Subscriber
       Handlers.Subscriber
       Handlers.Task
+      Types.Job
       Types.Subscriber
       Types.Task
   default-language: Haskell2010

@@ -8,39 +8,38 @@ import Control.Monad.IO.Class
 import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL
 import Data.String.Conversions (cs)
-
-shouldAddTask :: Connection -> ActionM ()
-shouldAddTask = addTask
+import Control.Concurrent.Chan (Chan,writeChan,readChan)
 
 addTask :: Connection -> ActionM ()
 addTask conn = do
-  queue <- param "queue" :: ActionM TL.Text
+  queue_ <- param "queue" :: ActionM TL.Text
   value <- param "value" :: ActionM TL.Text
   expire <- param "expire" :: ActionM Int
-  createdJob <- liftIO (runDisque conn $ addjob (cs queue) (cs value) expire)
+  createdJob <- liftIO (runDisque conn $ addjob (cs queue_) (cs value) expire)
   case createdJob of
-    Left val -> text (cs $ deconsReplay val)
-    Right val -> text (cs val)
+    Left val -> text (cs $ show val)
+    Right val -> text (cs val)                           
 
-pullTask :: Connection -> IO ()
-pullTask conn = do
+pullTask :: Chan Job -> Connection -> IO ()
+pullTask taskChannel conn = do
   job <- liftIO (runDisque conn $ getjobs ["sms"] 1)
-  handleTask job
-  pullTask conn
+  handleTask taskChannel job
+  pullTask taskChannel conn
   return ()
 
-handleTask :: Either Reply [Job] -> IO ()
-handleTask (Right val) = do
-  print val
+handleTask :: Chan Job -> Either Reply [Job] -> IO ()
+handleTask taskChannel (Right joblist) = do
+  let currentJob = head joblist
+  writeChan taskChannel currentJob
   return ()
-handleTask (Left val) = do
-  print val
+handleTask _ (Left val) = do
+  print "error found job"
   return ()
 
-
-deconsReplay :: Reply -> B.ByteString
-deconsReplay replay =
-      case replay of
-            SingleLine code -> code
-            _ -> ""
+jobSender :: Connection -> Chan Job -> IO ()
+jobSender conn channel = do
+    job <- readChan channel
+    putStrLn ("send:" ++ show job)
+    ack <- liftIO (runDisque conn $ fastack [jobid job])
+    jobSender conn channel
 

@@ -57,6 +57,8 @@ import Control.Applicative
 import Control.Monad.IO.Class
 import Data.ByteString        (ByteString)
 import Database.Redis as R
+import Data.String.Conversions (cs)
+
 
 newtype Disque a
   = Disque (Redis a)
@@ -79,7 +81,7 @@ type Queue = ByteString
 type Data  = ByteString
 
 data Job = Job {queue:: Queue, jobid :: JobId, jobdata :: Data}
-           deriving Show
+           deriving (Show)
 
 instance RedisResult Job where
     decode (MultiBulk (Just (x:y:z:_))) =
@@ -106,7 +108,7 @@ bshow :: Show a => a -> BS8.ByteString
 bshow = BS8.pack . show
 
 addjob :: ByteString -> ByteString -> Int -> Disque (Either Reply ByteString)
-addjob q jobdata _timeout = Disque $ sendRequest ["ADDJOB", q, jobdata, "0"]
+addjob q jobdata _timeout = Disque $ sendRequest ["ADDJOB", q, jobdata, (cs $ show _timeout)]
 
 getjob :: [ByteString] ->  Disque (Either Reply Job)
 getjob qs = Disque $ sendRequest $ ["GETJOB", "FROM"] ++ qs

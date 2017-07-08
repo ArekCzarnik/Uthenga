@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache
+          key: cache-{{ checksum "Uthenga.cabal" }}
       - run: stack build --fast
       - run: stack clean
       - run: stack test --no-terminal --coverage
@@ -21,4 +21,4 @@ jobs:
           paths:
             - ~/.stack
             - ~/uthenga/.stack-work
-          key: cache
+          key: cache-{{ checksum "Uthenga.cabal" }}

@@ -20,11 +20,9 @@ The goal of Uthenga is to be a fast message bus for user interaction of data bet
 
 * using plain old mysql for persistence
 * for task scheduler disque
-* for concurrently requests haxl 
 * twilio for sms sending
 
 * https://github.com/markandrus/twilio-haskell
 * https://github.com/winterland1989/mysql-haskell
 * https://github.com/creichert/disque.hs
-* https://github.com/facebook/Haxl
 * https://github.com/snoyberg/http-client

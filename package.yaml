@@ -1,5 +1,5 @@
 name: Uthenga
-version: '0.1.1.0'
+version: '0.1.2.0'
 category: Devops
 author: Arek Czarnik
 maintainer: arekczarnik@gmail.com
@@ -14,7 +14,6 @@ dependencies:
 library:
   source-dirs: src
   exposed-modules:
-  - Database.Disque
   - Database.Subscriber
   - Application
   dependencies:
@@ -30,6 +29,10 @@ library:
     - http-types
     - mysql-haskell
     - resource-pool
+    - http-client
+    - http-client-tls
+    - configurator
+    - haskell-disque
 executables:
   uthenga:
     main: Main.hs
@@ -51,6 +54,10 @@ executables:
     - http-types
     - mysql-haskell
     - resource-pool
+    - http-client
+    - http-client-tls
+    - configurator
+    - haskell-disque
 tests:
   uthenga-test:
     main: Main.hs
@@ -74,4 +81,5 @@ tests:
     - test-fixture
     - hspec-discover
     - hspec-wai-json
+    - haskell-disque
     - Uthenga

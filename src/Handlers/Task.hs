@@ -5,10 +5,12 @@ module Handlers.Task where
 import Web.Scotty
 import Database.Disque
 import Control.Monad.IO.Class
-import qualified Data.ByteString as B
 import qualified Data.Text.Lazy as TL
 import Data.String.Conversions (cs)
 import Control.Concurrent.Chan (Chan,writeChan,readChan)
+import Network.HTTP.Client
+import Network.HTTP.Types.Status (statusCode)
+import Types.Configuration
 
 addTask :: Connection -> ActionM ()
 addTask conn = do
@@ -36,10 +38,18 @@ handleTask _ (Left val) = do
   print (show val)
   return ()
 
-jobSender :: Connection -> Chan Job -> IO ()
-jobSender conn channel = do
-    job <- readChan channel
-    putStrLn ("send:" ++ show job)
-    ack <- liftIO (runDisque conn $ fastack [jobid job])
-    jobSender conn channel
+jobSender :: Configuration -> Manager -> Connection -> Chan Job -> IO ()
+jobSender conf httpManager conn channel = do
+  job <- readChan channel
+  putStrLn ("task:" ++ show job)
+  _ <- liftIO (runDisque conn $ fastack [jobid job])
+    -- Create the request
+  initialRequest <- parseRequest (url conf)
+  let auth = applyBasicAuth (cs $ accountid conf) (cs $ authtoken conf) initialRequest
+      body = urlEncodedBody [("To", "+4915111441671"), ("From", cs $ from conf), ("Body", cs $ bodymessage conf)] auth
+      request_ = body {method = "POST"}
+  response <- httpLbs request_ httpManager
+  putStrLn $ "The status code was: " ++ show (statusCode $ responseStatus response)
+  print $ responseBody response
+  jobSender conf httpManager conn channel
 

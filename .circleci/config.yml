@@ -13,8 +13,8 @@ jobs:
       - checkout
       - restore_cache:
           key: cache
-      - run: stack clean
       - run: stack build --fast
+      - run: stack clean
       - run: stack test --no-terminal --coverage
       - run: stack exec -- shc --repo-token=$COVERALLS_REPO_TOKEN Uthenga uthenga-test
       - save_cache:

@@ -15,6 +15,7 @@ import qualified Database.MySQL.Base as Mysql
 import Types.Subscriber
 import Data.Pool (Pool, tryWithResource)
 import Database.Subscriber
+import Data.Foldable
 
 addTask :: Connection -> ActionM ()
 addTask conn = do
@@ -48,11 +49,8 @@ jobSender conf httpManager conn dbPool channel = do
   _ <- liftIO (runDisque conn $ fastack [jobid job])
     -- Create the request
   subscribers <- liftIO (tryWithResource dbPool listSubscriber)
-  case subscribers of
-     Nothing -> return ()
-     Just list -> mapM_ (\x -> sendToSubscriber x conf httpManager) list
+  forM_ subscribers (mapM_ (\subscriber -> sendToSubscriber subscriber conf httpManager))
   jobSender conf httpManager conn dbPool channel
-
 
 sendToSubscriber :: Subscriber -> Configuration -> Manager -> IO ()
 sendToSubscriber subscriber conf httpManager = do

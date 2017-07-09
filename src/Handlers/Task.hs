@@ -9,7 +9,6 @@ import qualified Data.Text.Lazy as TL
 import Data.String.Conversions (cs)
 import Control.Concurrent.Chan (Chan,writeChan,readChan)
 import Network.HTTP.Client
-import Network.HTTP.Types.Status (statusCode)
 import Types.Configuration
 import qualified Database.MySQL.Base as Mysql
 import Types.Subscriber
@@ -47,7 +46,6 @@ jobSender :: Configuration -> Manager -> Connection -> Pool Mysql.MySQLConn -> C
 jobSender conf httpManager conn dbPool channel = do
   job <- readChan channel
   _ <- liftIO (runDisque conn $ fastack [jobid job])
-    -- Create the request
   subscribers <- liftIO (tryWithResource dbPool listSubscriber)
   forM_ subscribers (mapM_ (\subscriber -> sendToSubscriber subscriber conf httpManager))
   jobSender conf httpManager conn dbPool channel
@@ -56,7 +54,7 @@ sendToSubscriber :: Subscriber -> Configuration -> Manager -> IO ()
 sendToSubscriber subscriber conf httpManager = do
   initialRequest <- parseRequest (url conf)
   let auth = applyBasicAuth (cs $ accountid conf) (cs $ authtoken conf) initialRequest
-      body = urlEncodedBody [("To", cs $ target subscriber), ("From", cs $ from conf), ("Body", cs $ bodymessage conf)] auth
-      request_ = body {method = "POST"}
-  response <- httpLbs request_ httpManager
+      body_ = urlEncodedBody [("To", cs $ target subscriber), ("From", cs $ from conf), ("Body", cs $ bodymessage conf)] auth
+      request_ = body_ {method = "POST"}
+  httpLbs request_ httpManager
   return ()

@@ -3,8 +3,6 @@
 module Database.Subscriber where
 
 import Control.Monad.IO.Class
-import qualified Data.Text.Lazy as TL
-import Web.Scotty.Internal.Types (ActionT)
 import Database.MySQL.Base
 import Types.Subscriber
 import System.IO.Streams

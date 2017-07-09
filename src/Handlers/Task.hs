@@ -11,6 +11,10 @@ import Control.Concurrent.Chan (Chan,writeChan,readChan)
 import Network.HTTP.Client
 import Network.HTTP.Types.Status (statusCode)
 import Types.Configuration
+import qualified Database.MySQL.Base as Mysql
+import Types.Subscriber
+import Data.Pool (Pool, tryWithResource)
+import Database.Subscriber
 
 addTask :: Connection -> ActionM ()
 addTask conn = do
@@ -38,18 +42,23 @@ handleTask _ (Left val) = do
   print (show val)
   return ()
 
-jobSender :: Configuration -> Manager -> Connection -> Chan Job -> IO ()
-jobSender conf httpManager conn channel = do
+jobSender :: Configuration -> Manager -> Connection -> Pool Mysql.MySQLConn -> Chan Job -> IO ()
+jobSender conf httpManager conn dbPool channel = do
   job <- readChan channel
-  putStrLn ("task:" ++ show job)
   _ <- liftIO (runDisque conn $ fastack [jobid job])
     -- Create the request
+  subscribers <- liftIO (tryWithResource dbPool listSubscriber)
+  case subscribers of
+     Nothing -> return ()
+     Just list -> mapM_ (\x -> sendToSubscriber x conf httpManager) list
+  jobSender conf httpManager conn dbPool channel
+
+
+sendToSubscriber :: Subscriber -> Configuration -> Manager -> IO ()
+sendToSubscriber subscriber conf httpManager = do
   initialRequest <- parseRequest (url conf)
   let auth = applyBasicAuth (cs $ accountid conf) (cs $ authtoken conf) initialRequest
-      body = urlEncodedBody [("To", "+4915111441671"), ("From", cs $ from conf), ("Body", cs $ bodymessage conf)] auth
+      body = urlEncodedBody [("To", cs $ target subscriber), ("From", cs $ from conf), ("Body", cs $ bodymessage conf)] auth
       request_ = body {method = "POST"}
   response <- httpLbs request_ httpManager
-  putStrLn $ "The status code was: " ++ show (statusCode $ responseStatus response)
-  print $ responseBody response
-  jobSender conf httpManager conn channel
-
+  return ()

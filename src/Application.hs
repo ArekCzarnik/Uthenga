@@ -42,7 +42,7 @@ app disqueConnection dbPool = do
          taskChannel <- newChan
          httpClientManager <- newManager tlsManagerSettings
          _ <- forkIO (pullTask taskChannel disqueConnection)
-         _ <- forkIO (jobSender conf httpClientManager disqueConnection taskChannel)
+         _ <- forkIO (jobSender conf httpClientManager disqueConnection dbPool taskChannel)
          scottyApp $ do
            middleware logStdout -- log all requests; for production use logStdout
        --  Subscriber part
